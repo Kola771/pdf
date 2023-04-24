@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="code.js"></script>
+    <script src="cod.js"></script>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        .image {
+            width: 500px;
+        }
+    </style>
+    <title>Essai</title>
+</head>
+
+<body>
+    <input type="button" id="create_pdf" value="Generate PDF">
+    <form class="form" style="max-width: none; width: 1005px;">
+        <h2 style="color: #0094ff">Hello</h2>
+        <h3>😎😗🥰:</h3>
+        <p style="font-size: large">
+            Comment générer un pdf ?
+        </p>
+        <section>
+            <h2>Premier pdf</h2>
+            <img class="image" src="image.png" alt="image">
+        </section>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Company</th>
+                    <th>Contact</th>
+                    <th>Country</th>
+                </tr>
+                <tr>
+                    <td>Alfreds Futterkiste</td>
+                    <td>Maria Anders</td>
+                    <td>Germany</td>
+                </tr>
+                <tr>
+                    <td>Centro comercial Moctezuma</td>
+                    <td>Francisco Chang</td>
+                    <td>Mexico</td>
+                </tr>
+                <tr>
+                    <td>Ernst Handel</td>
+                    <td>Roland Mendel</td>
+                    <td>Austria</td>
+                </tr>
+                <tr>
+                    <td>Island Trading</td>
+                    <td>Helen Bennett</td>
+                    <td>UK</td>
+                </tr>
+                <tr>
+                    <td>Laughing Bacchus Winecellars</td>
+                    <td>Yoshi Tannamuri</td>
+                    <td>Canada</td>
+                </tr>
+                <tr>
+                    <td>Magazzini Alimentari Riuniti</td>
+                    <td>Giovanni Rovelli</td>
+                    <td>Italy</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <script>
+        (function () {
+            let form = $('.form'),
+                cache_width = form.width(),
+                a4 = [595.28, 841.89]; // Taille d'un papier A4 
+            document.getElementById("create_pdf").addEventListener('click', function () {
+                $('body').scrollTop(0);
+                createPDF();
+            });
+
+            // création du pdf  
+            function createPDF() {
+                getCanvas().then(function (canvas) {
+                    let img = canvas.toDataURL("image/png"),
+                        doc = new jsPDF({
+                            unit: 'px',
+                            format: 'a4'
+                        });
+                    doc.addImage(img, 'JPEG', 20, 20);
+                    doc.save('article.pdf');
+                    form.width(cache_width);
+                });
+            }
+
+            // création d'un objet canvas
+            function getCanvas() {
+                form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+                return html2canvas(form, {
+                    imageTimeout: 2000,
+                    removeContainer: true
+                });
+            }
+
+        }());
+
+    </script>
+</body>
+
+</html>
